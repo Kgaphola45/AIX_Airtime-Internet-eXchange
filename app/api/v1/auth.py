@@ -6,7 +6,7 @@ from app.api.deps import get_current_user
 from app.core.security import create_access_token
 from app.database.session import get_db
 from app.schemas.user import UserCreate, UserResponse, Token
-from app.services.user_service import create_user, authenticate_user
+from app.services.user_service import create_user, authenticate_user, get_user_by_email
 from app.models.user import User
 
 router = APIRouter()
@@ -14,13 +14,24 @@ router = APIRouter()
 @router.post("/register", response_model=UserResponse)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
     # Check if user exists
-    # For brevity, assuming user_service handles duplicates or DB error raises
-    # Ideally should check here
+    print(f"DEBUG: Checking for user with email: '{user_in.email}'")
+    user = get_user_by_email(db, email=user_in.email)
+    print(f"DEBUG: Found user: {user}")
+    
+    if user:
+        print("DEBUG: Raising 400 - User exists")
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this email already exists in the system.",
+        )
+    
     try:
         user = create_user(db, user_in)
         return user
-    except Exception:
-        raise HTTPException(status_code=400, detail="Email already registered")
+    except Exception as e:
+        # Log the error (print it for now so it shows in console)
+        print(f"Error creating user: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to create user: {str(e)}")
 
 @router.post("/token", response_model=Token)
 def login_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirtimeX - Premium Airtime Service</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Auth View -->
+        <div id="auth-view" class="glass-card">
+            <div class="logo">AirtimeX</div>
+            
+            <!-- Login Form -->
+            <div id="login-form">
+                <h2>Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="text" id="login-email" required placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                    <div class="switch-view">
+                        Don't have an account? <a onclick="toggleAuthMode()">Sign up</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="hidden">
+                <h2>Create Account</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email Address</label>
+                        <input type="email" id="reg-email" required placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn">Create Account</button>
+                    <div class="switch-view">
+                        Already have an account? <a onclick="toggleAuthMode()">Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard View -->
+        <div id="dashboard-view" class="glass-card hidden">
+            <div class="dashboard-header">
+                <div class="logo" style="margin: 0; font-size: 1.5rem;">AirtimeX</div>
+                <button onclick="handleLogout()" class="logout-btn">Sign Out</button>
+            </div>
+
+            <div class="wallet-card">
+                <div class="balance-label">Current Balance</div>
+                <div class="balance-amount">R <span id="wallet-balance">0.00</span></div>
+                <button onclick="showLoadModal()" class="btn" style="background: rgba(255,255,255,0.2); width: auto; padding: 0.5rem 1.5rem;">+ Top Up</button>
+            </div>
+
+            <div class="action-grid">
+                <div class="action-card">
+                    <div class="action-icon">📱</div>
+                    <div class="action-title">Buy Airtime</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📦</div>
+                    <div class="action-title">Buy Bundles</div>
+                </div>
+                <div class="action-card" onclick="checkUsage()">
+                    <div class="action-icon">📊</div>
+                    <div class="action-title">Check Usage</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">🕒</div>
+                    <div class="action-title">History</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification">
+        <div id="notification-message">Message</div>
+    </div>
+
+    <!-- Simple Load Modal (Hidden by default, could be added later for better UX) -->
+    <div id="load-modal" class="glass-card hidden" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 320px; z-index: 100;">
+        <h2>Top Up Wallet</h2>
+        <form onsubmit="handleTopUp(event)">
+            <div class="form-group">
+                <label>Amount (R)</label>
+                <input type="number" id="load-amount" required min="10" placeholder="100">
+            </div>
+            <button type="submit" class="btn">Confirm Payment</button>
+            <button type="button" onclick="hideLoadModal()" class="btn btn-secondary">Cancel</button>
+        </form>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
